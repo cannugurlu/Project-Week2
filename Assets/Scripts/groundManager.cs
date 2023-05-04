@@ -1,19 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class groundManager : MonoBehaviour
 {
     public bool key2;
-    private GameObject[] kutular1;
-    private GameObject[] allObjects;
-    public int controllerInteger=0;
-    float kupposx,kupposz;
+    private GameObject[] kutular1,allObjects;
+    int controllerInteger = 0;
+    public bool isClicked;
+    Camera cam;
     void Start()
     {
-        solgunlastir();
-        kutular1 = GameObject.FindGameObjectsWithTag("ground");
         allObjects = FindObjectsOfType<GameObject>();
+        cam = Camera.main;
+            solgunlastir();
+        kutular1 = GameObject.FindGameObjectsWithTag("ground");
+        foreach (var item in allObjects)
+        {
+            if (item.CompareTag("house") || item.CompareTag("engel"))
+            {
+                solgunlastir();
+            }
+        }
     }
     void Update()
     {
@@ -22,65 +31,46 @@ public class groundManager : MonoBehaviour
 
     private void OnMouseDown()
     {
+        string a = transform.name;
+
         if (!key2)
         {
-            rengiduzelt(gameObject);
-            kupposx = gameObject.transform.position.x;
-            kupposz = gameObject.transform.position.z;
-            foreach (GameObject otherCubes in kutular1)
-            {
-                if (otherCubes.transform.position.x == kupposx + 2 && otherCubes.transform.position.z == kupposz)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx - 2 && otherCubes.transform.position.z == kupposz)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz + 2)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz - 2)
-                {
-                    rengiduzelt(otherCubes);
-                }
-            }
+            rengiduzelt();
+            etrafiniaydinlat2(a);
+
             gameManager.key = true;
         }
     }
     private void OnMouseEnter()
     {
+        string a = transform.name;
+        Debug.Log(a);
+
         if (key2)
         {
-            rengiduzelt(gameObject);
-            kupposx = gameObject.transform.position.x;
-            kupposz = gameObject.transform.position.z;
-            foreach (GameObject otherCubes in kutular1)
-            {
-                if (otherCubes.transform.position.x == kupposx + 2 && otherCubes.transform.position.z == kupposz)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx - 2 && otherCubes.transform.position.z == kupposz)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz + 2)
-                {
-                    rengiduzelt(otherCubes);
-                }
-                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz - 2)
-                {
-                    rengiduzelt(otherCubes);
-                }
-            }
+            rengiduzelt();
+            etrafiniaydinlat2(a);
         }
     }
 
     private void OnMouseUp()
     {
+        foreach (GameObject item in allObjects)
+        {
+                if (item.CompareTag("ground") || item.CompareTag("house") || item.CompareTag("engel"))
+                {
+                if (!item.GetComponent<groundManager>().isClicked)
+                {
+                    Color color = item.GetComponent<Renderer>().material.color;
+                    color.r *= 0.65f;
+                    color.g *= 0.65f;
+                    color.b *= 0.65f;
+                    item.GetComponent<Renderer>().material.color=color;
+                }
+            }
+        }
         gameManager.key = false;
+        SceneManager.LoadScene(0);
 
     }
     public void solgunlastir()
@@ -97,13 +87,14 @@ public class groundManager : MonoBehaviour
                 material.color = color;
             }
             controllerInteger++;
+            isClicked = true;
         }
     }
-    public void rengiduzelt(GameObject X)
+    public void rengiduzelt()
     {
         if (controllerInteger == 1)
         {
-            Material[] materials = X.GetComponent<Renderer>().materials;
+            Material[] materials = gameObject.GetComponent<Renderer>().materials;
             foreach (Material material in materials)
             {
                 Color color = material.color;
@@ -112,7 +103,73 @@ public class groundManager : MonoBehaviour
                 color.b *= 1.53846f;
                 material.color = color;
             }
+            isClicked = false;
             controllerInteger--;
         }
+
+    }
+    public void etrafiniaydinlat2(string a)
+    {
+        foreach (GameObject kutu in kutular1)
+        {
+            //print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+            if (int.Parse(kutu.transform.name) == int.Parse(a) + 1 && int.Parse(a) % 5 != 0)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+                etrafaydinlat(kutu);
+                if (kutu.transform.childCount > 0)
+                {
+                    GameObject ev = kutu.transform.GetChild(0).gameObject;
+                    etrafaydinlat(ev);
+                }
+
+            }
+            if (int.Parse(kutu.transform.name) == int.Parse(a) + 5)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+                etrafaydinlat(kutu);
+                if (kutu.transform.childCount > 0)
+                {
+                    GameObject ev = kutu.transform.GetChild(0).gameObject;
+                    etrafaydinlat(ev);
+                }
+
+            }
+            if (int.Parse(kutu.transform.name) == int.Parse(a) - 5)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+                etrafaydinlat(kutu);
+                if (kutu.transform.childCount > 0)
+                {
+                    GameObject ev = kutu.transform.GetChild(0).gameObject;
+                    etrafaydinlat(ev);
+                }
+
+            }
+            if (int.Parse(kutu.transform.name) == int.Parse(a) - 1 && int.Parse(a) % 5 != 1)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+                etrafaydinlat(kutu);
+                if (kutu.transform.childCount > 0)
+                {
+                    GameObject ev = kutu.transform.GetChild(0).gameObject;
+                    etrafaydinlat(ev);
+                }
+
+            }
+
+        }
+    }
+    public void keysettrue()
+    {
+
+        gameManager.key = true;
+    }
+    public void etrafaydinlat(GameObject kutu)
+    {
+        kutu.GetComponent<groundManager>().keysettrue();
+        kutu.GetComponent<groundManager>().rengiduzelt();
     }
 }
+
+
