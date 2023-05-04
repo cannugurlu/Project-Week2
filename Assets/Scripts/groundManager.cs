@@ -7,8 +7,10 @@ public class groundManager : MonoBehaviour
     public bool key2;
     private GameObject[] kutular1;
     int controllerInteger=0;
+    Camera cam;
     void Start()
     {
+        cam = Camera.main;
         solgunlastir();
         kutular1 = GameObject.FindGameObjectsWithTag("ground");
     }
@@ -19,18 +21,25 @@ public class groundManager : MonoBehaviour
 
     private void OnMouseDown()
     {
+        string a = transform.name;
+
         if (!key2)
         {
             rengiduzelt();
+            etrafiniaydinlat2(a);
             
             gameManager.key = true;
         }
     }
     private void OnMouseEnter()
     {
+        string a = transform.name;
+        Debug.Log(a);
+
         if (key2)
         {
             rengiduzelt();
+            etrafiniaydinlat2(a);
         }
     }
 
@@ -70,5 +79,54 @@ public class groundManager : MonoBehaviour
             }
             controllerInteger--;
         }
+        
+    }
+    public void etrafiniaydinlat2(string a)
+    {
+        foreach(GameObject kutu in kutular1)
+        {
+            //print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+            if(int.Parse(kutu.transform.name) == int.Parse(a) + 1 && int.Parse(a) % 5 != 0)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name) );
+
+                etrafaydinlat(kutu);
+
+            }
+            if(int.Parse(kutu.transform.name) == int.Parse(a) + 5)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+
+                etrafaydinlat(kutu);
+
+            }
+            if (int.Parse(kutu.transform.name) == int.Parse(a) - 5)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+
+                etrafaydinlat(kutu);
+
+            }
+            if (int.Parse(kutu.transform.name) == int.Parse(a) - 1 && int.Parse(a) % 5 != 1)
+            {
+                print(int.Parse(a) + " " + int.Parse(kutu.transform.name));
+
+                etrafaydinlat(kutu);
+
+            }
+
+        }
+    }
+    public void keysettrue()
+    {
+
+        gameManager.key = true;
+    }
+    public void etrafaydinlat(GameObject kutu)
+    {
+        kutu.GetComponent<groundManager>().keysettrue();
+        kutu.GetComponent<groundManager>().rengiduzelt();
     }
 }
+
+
