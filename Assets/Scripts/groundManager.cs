@@ -6,11 +6,14 @@ public class groundManager : MonoBehaviour
 {
     public bool key2;
     private GameObject[] kutular1;
-    int controllerInteger=0;
+    private GameObject[] allObjects;
+    public int controllerInteger=0;
+    float kupposx,kupposz;
     void Start()
     {
         solgunlastir();
         kutular1 = GameObject.FindGameObjectsWithTag("ground");
+        allObjects = FindObjectsOfType<GameObject>();
     }
     void Update()
     {
@@ -21,8 +24,28 @@ public class groundManager : MonoBehaviour
     {
         if (!key2)
         {
-            rengiduzelt();
-            
+            rengiduzelt(gameObject);
+            kupposx = gameObject.transform.position.x;
+            kupposz = gameObject.transform.position.z;
+            foreach (GameObject otherCubes in kutular1)
+            {
+                if (otherCubes.transform.position.x == kupposx + 2 && otherCubes.transform.position.z == kupposz)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx - 2 && otherCubes.transform.position.z == kupposz)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz + 2)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz - 2)
+                {
+                    rengiduzelt(otherCubes);
+                }
+            }
             gameManager.key = true;
         }
     }
@@ -30,7 +53,28 @@ public class groundManager : MonoBehaviour
     {
         if (key2)
         {
-            rengiduzelt();
+            rengiduzelt(gameObject);
+            kupposx = gameObject.transform.position.x;
+            kupposz = gameObject.transform.position.z;
+            foreach (GameObject otherCubes in kutular1)
+            {
+                if (otherCubes.transform.position.x == kupposx + 2 && otherCubes.transform.position.z == kupposz)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx - 2 && otherCubes.transform.position.z == kupposz)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz + 2)
+                {
+                    rengiduzelt(otherCubes);
+                }
+                if (otherCubes.transform.position.x == kupposx && otherCubes.transform.position.z == kupposz - 2)
+                {
+                    rengiduzelt(otherCubes);
+                }
+            }
         }
     }
 
@@ -55,11 +99,11 @@ public class groundManager : MonoBehaviour
             controllerInteger++;
         }
     }
-    public void rengiduzelt()
+    public void rengiduzelt(GameObject X)
     {
         if (controllerInteger == 1)
         {
-            Material[] materials = gameObject.GetComponent<Renderer>().materials;
+            Material[] materials = X.GetComponent<Renderer>().materials;
             foreach (Material material in materials)
             {
                 Color color = material.color;
