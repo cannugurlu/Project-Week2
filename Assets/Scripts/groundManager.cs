@@ -10,8 +10,10 @@ public class groundManager : MonoBehaviour
     int controllerInteger = 0;
     public bool isClicked;
     Camera cam;
+    int initialRoadNumber;
     void Start()
     {
+        initialRoadNumber = gameManager.howManyRoad;
         allObjects = FindObjectsOfType<GameObject>();
         cam = Camera.main;
             solgunlastir();
@@ -27,11 +29,11 @@ public class groundManager : MonoBehaviour
     void Update()
     {
         key2 = gameManager.key;
-        print(gameManager.howManyRoad);
     }
 
     private void OnMouseDown()
     {
+        gameManager.howManyRoad--;
         string a = transform.name;
 
         if (!key2)
@@ -49,6 +51,7 @@ public class groundManager : MonoBehaviour
 
         if (key2)
         {
+            if (gameManager.howManyRoad > 0) {gameManager.howManyRoad--;}
             rengiduzelt();
             etrafiniaydinlat2(a);
         }
@@ -56,6 +59,7 @@ public class groundManager : MonoBehaviour
 
     private void OnMouseUp()
     {
+        gameManager.howManyRoad = initialRoadNumber;
         foreach (GameObject item in allObjects)
         {
                 if (item.CompareTag("ground") || item.CompareTag("house") || item.CompareTag("engel"))
