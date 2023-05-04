@@ -27,6 +27,7 @@ public class groundManager : MonoBehaviour
     void Update()
     {
         key2 = gameManager.key;
+        print(gameManager.howManyRoad);
     }
 
     private void OnMouseDown()
