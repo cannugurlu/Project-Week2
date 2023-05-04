@@ -6,6 +6,7 @@ public class groundManager : MonoBehaviour
 {
     public bool key2;
     private GameObject[] kutular1;
+    int controllerInteger=0;
     void Start()
     {
         solgunlastir();
@@ -40,26 +41,34 @@ public class groundManager : MonoBehaviour
     }
     public void solgunlastir()
     {
-        Material[] materials = gameObject.GetComponent<Renderer>().materials;
-        foreach(Material material in materials)
+        if (controllerInteger == 0)
         {
-            Color color = material.color;
-            color.r *= 0.65f;
-            color.g *= 0.65f;
-            color.b *= 0.65f;
-            material.color = color;
+            Material[] materials = gameObject.GetComponent<Renderer>().materials;
+            foreach (Material material in materials)
+            {
+                Color color = material.color;
+                color.r *= 0.65f;
+                color.g *= 0.65f;
+                color.b *= 0.65f;
+                material.color = color;
+            }
+            controllerInteger++;
         }
     }
     public void rengiduzelt()
     {
-        Material[] materials = gameObject.GetComponent<Renderer>().materials;
-        foreach (Material material in materials)
+        if (controllerInteger == 1)
         {
-            Color color = material.color;
-            color.r *= 1.53846f;
-            color.g *= 1.53846f;
-            color.b *= 1.53846f;
-            material.color = color;
+            Material[] materials = gameObject.GetComponent<Renderer>().materials;
+            foreach (Material material in materials)
+            {
+                Color color = material.color;
+                color.r *= 1.53846f;
+                color.g *= 1.53846f;
+                color.b *= 1.53846f;
+                material.color = color;
+            }
+            controllerInteger--;
         }
     }
 }
